@@ -1,0 +1,315 @@
+---
+Project: "Practical Machine Learning Course - Final Project"
+Date: "September 4,2016"
+
+---
+
+### Background (Source: https://www.coursera.org/learn/practical-machine-learning/supplement/PvInj/course-project-instructions-read-first)
+Using devices such as Jawbone Up, Nike FuelBand, and Fitbit it is now possible to collect a large amount of data about personal activity relatively inexpensively. These type of devices are part of the quantified self movement - a group of enthusiasts who take measurements about themselves regularly to improve their health, to find patterns in their behavior, or because they are tech geeks. One thing that people regularly do is quantify how much of a particular activity they do, but they rarely quantify how well they do it. In this project, your goal will be to use data from accelerometers on the belt, forearm, arm, and dumbell of 6 participants. They were asked to perform barbell lifts correctly and incorrectly in 5 different ways. More information is available from the website here: http://groupware.les.inf.puc-rio.br/har (see the section on the Weight Lifting Exercise Dataset).
+
+### Data
+The training data for this project is available here:
+
+https://d396qusza40orc.cloudfront.net/predmachlearn/pml-training.csv
+
+The test data is available here:
+
+https://d396qusza40orc.cloudfront.net/predmachlearn/pml-testing.csv
+
+The data for this project came from this source: http://groupware.les.inf.puc-rio.br/har. 
+
+
+### Goal 
+
+The goal of your project is to predict the manner in which they did the exercise. This is the "classe" variable in the training set. You may use any of the other variables to predict with. You should create a report describing how you built your model, how you used cross validation, what you think the expected out of sample error is, and why you made the choices you did. You will also use your prediction model to predict 20 different test cases.
+
+### DATA PREPERATION STEP
+
+#### Load all necessary packages
+
+```{r, message=FALSE}
+require(caret)
+    require(corrplot)
+      require(ggplot2)
+        require(knitr)
+          require(Rtsne)
+            require(stats)
+              require(xgboost)
+                require(e1071)
+                knitr::opts_chunk$set(cache=TRUE)
+```
+For fast and accurate training the model, I choose XGBoost, an implementation of tree-based extreme gradient boosting algorithm.   
+
+#### GETTING DATA
+```{r}
+# Declare the URL of the training & test datasets
+train_url <-"https://d396qusza40orc.cloudfront.net/predmachlearn/pml-training.csv"
+
+test_url <- "https://d396qusza40orc.cloudfront.net/predmachlearn/pml-testing.csv"
+
+# Declare the names of the training & test data to be downloaded
+train_name <- "./data/pml-training.csv"
+test_name <- "./data/pml-testing.csv"
+
+# Check if the directory exists, if not then create a new directory
+if (!file.exists("./data")) {
+    dir.create("./data")
+}
+# Check if the training & test data files exists, if not
+# then download the files from the URL declared above
+
+if (!file.exists(train_name)) {
+    download.file(train_url, destfile=train_name, method="curl")
+}
+if (!file.exists(test_name)) {
+    download.file(test_url, destfile=test_name, method="curl")
+}
+# Load the files into R as data.frames  
+train <- read.csv("./data/pml-training.csv")
+test <- read.csv("./data/pml-testing.csv")
+
+# Check the dimensions and the variable names of the test & train 
+# data.frames
+dim(train)
+dim(test)
+names(train)
+names(test)
+```  
+
+TRAIN DATA: 19,622 rows | 158 features (predictors) | Column 'X' is unusable row number | "classe" is the target variable
+
+TEST DATA: 20 rows | 158 features |Column 'X' is unusable row number
+
+
+#### DATA CLEANING
+
+1) Remove the target variable(classe) from the train dataset
+  
+```{r}
+# target variable (label)
+target_var <- train[, "classe"]
+target <- target_var
+levels(target)
+```
+Note: i) The Target variable has five(5) levels 
+      ii) Levels are in character format ("A" "B" "C" "D" "E")
+      
+2) Convert target variable from character to numeric, 
+  ( XGBoost can only work with numerical data ) 
+```{r}
+# Conversion of Levels: character -> numeric
+
+num_level <- length(levels(target))
+levels(target) <- 1:num_level
+head(target)
+```
+   
+
+3) Remove target variable (classe) from train dataset   
+```{r}
+# remove target from train
+train$classe <- NULL
+```
+
+Background excerpt:"In this project, your goal will be to use data from accelerometers on the belt, forearm, arm, and dumbell of 6 participants" 
+
+4) Filter by belt, forearm, arm and dumbell columns; remove other
+variables.
+  
+```{r}
+# Retain relevant variables related to belt, forearm, arm, dumbell
+relevant_vars <- grepl("belt|arm|dumbell", names(train))
+train <- train[, relevant_vars]
+test <- test[, relevant_vars]
+```
+
+5) Remove variables with NA values, using test data as a guide  
+```{r}
+# remove columns with NA, use test data as referal for NA
+cols_without_na <- colSums(is.na(test)) == 0
+train <- train[, cols_without_na]
+test <- test[, cols_without_na]
+```
+Result: 39 feature variables remain
+
+### PRE-PROCESSING 
+
+#### Feature Variance investigation
+
+6) Check for variables that have extremely low variance (using nearZeroVar() )
+
+```{r}
+# check for zero variance
+zero_var <- nearZeroVar(train, saveMetrics=TRUE)
+zero_var
+```
+Result: All features have noticeable variability, thus no
+more filtering is required
+
+### VISUALIZATION
+
+#### Plot- features vs target  
+
+7) Plot features against the target variable
+```{r fig.width=12, fig.height=8, dpi=72}
+featurePlot(train, target_var, "strip")
+```
+
+Observation: The distribution of the features is relatively similar
+across the target levels.
+
+#### Plot- correlation matrix  
+
+8) Plot a correlation matrix of feature variables 
+  
+```{r fig.width=12, fig.height=12, dpi=72}
+corrplot.mixed(cor(train), lower="circle", upper="color", 
+               tl.pos="lt", diag="n", order="hclust", hclust.method="complete")
+```
+
+Observation: The Correlation Matrix shows features
+are generally uncorrelated, withhold further preprocessing. 
+
+
+## MACHINE LEARNING MODEL
+
+To predict the activity quality ('classe') using features variables
+collected from the actvity monitors the XGBoost extreme gradient 
+boosting algorithm was applied.
+
+Note: XGBoost supports only numeric matrix data. 
+9) Converting all training, testing and target data to matrix.  
+
+### Prepare train & test data 
+```{r}
+# convert the train & test data to the matrix format
+train_matrix <- as.matrix(train)
+    mode(train_matrix) <- "numeric"
+
+test_matrix <- as.matrix(test)
+    mode(test_matrix) <- "numeric"
+    
+# convert target_var from factor to numeric matrix 
+#   xgboost takes multi-labels in [0, numOfClass)
+y = as.matrix(as.integer(target_var)-1)
+```
+
+
+#### Set Model Parameters 
+
+10) Set XGBoost parameters for cross validation and training &  
+multiclass classification objective as the gradient boosting's learning function.   
+
+```{r}
+# xgboost parameters
+param <- list("objective" = "multi:softprob",    # multiclass classification 
+              "num_class" = num_level,    # number of classes 
+                 "eval_metric" = "merror",    # evaluation metric =                                                      #multiclass error rate 
+                      "nthread" = 8,              # num. of threads used 
+                        "max_depth" = 16,    # maximum depth of tree 
+                            "eta" = 0.3,    # step size shrinkage 
+                    "gamma" = 0,         # min. loss reduction 
+                "subsample" = 1,    # data instances to grow tree 
+             "colsample_bytree" = 1,  # subsample ratio of columns when                                        #constructing each tree 
+              "min_child_weight" = 12  # min. sum of instance weight                                      #needed in a child 
+              )
+```
+
+#### K-FOLD CROSS VALIDATION (TO ESTIMATE ERROR)
+##### k = 4 | epoch = 200
+
+11) Perform 4-fold cross-validation to estimate error and 
+determine optimal iterations for minimal multiclass error rate
+```{r}
+# set random seed for reproducibility 
+set.seed(1234)
+
+# k-fold cross validation - k = 4 | epoch = 200
+nround_cv = 200
+
+bst_cv <- xgb.cv(param=param, data=train_matrix, label=y, nfold=4, nrounds=nround_cv, prediction=TRUE, verbose=FALSE)
+
+tail(bst_cv$dt) 
+```
+
+```{r}
+# find index of minimum merror
+
+min_merror_index = which.min(bst_cv$dt[, test.merror.mean]) 
+min_merror_index
+
+# minimum merror
+bst_cv$dt[min_merror_index,]
+```
+Observation: 
+
+Optimal cross-validation's minimum error rate 'test.merror.mean' approx. 0.54% (at iteration point = 187)   
+
+#### Confusion matrix 
+
+12) Tabulate the cross-validation's predictions of the model against actual.  
+
+```{r}
+# get CV's prediction decoding
+pred_cv = matrix(bst_cv$pred, nrow=length(bst_cv$pred)/num_level, ncol=num_level)
+pred_cv = max.col(pred_cv, "last")
+
+# confusion matrix
+confusionMatrix(factor(y+1), factor(pred_cv))
+```
+
+
+Observation: Correct predictions are on the diagonal 
+            Accuracy = '99.44% | Error rate = '0.56%'
+
+
+#### Model training 
+
+13) Train XGBoost using the training data.   
+```{r}
+# Model fitting using training data
+
+model_trained <- xgboost(param=param, data=train_matrix, label=y, 
+                                nrounds=min_merror_index, verbose=0) 
+```
+
+
+#### Predict the test data outcomes
+
+```{r}
+# Predict test data outcomes using the XGboost trained model  (model_trained)
+
+prediction <- predict(model_trained, test_matrix)  
+head(prediction, 10)  
+```
+
+#### POST-PROCESSING
+
+14) Convert the levels of outcomes '(1,2,3,4,5)' to their
+respective letter codes '(A, B, C, D, E)'.   
+  
+```{r}
+# Convert the numeric outcomes to their letter code
+prediction <- matrix(prediction, nrow=num_level, ncol<-length(prediction)/num_level)
+prediction <- t(prediction)
+prediction <- max.col(prediction, "last")
+prediction_char <- toupper(letters[prediction])
+```
+
+### PREPARE THE SUBMISSION FILES
+
+15) Create submission files with predictions
+```{r}
+path = "./answer"
+dir.create(path)
+pml_write_files = function(x) {
+    n = length(x)
+    for(i in 1: n) {
+        filename = paste0("problem_id_", i, ".txt")
+        write.table(x[i], file=file.path(path, filename), 
+                    quote=FALSE, row.names=FALSE, col.names=FALSE)
+    }
+}
+pml_write_files(prediction_char)
+```
+------------------   
