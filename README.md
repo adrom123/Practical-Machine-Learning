@@ -22,6 +22,8 @@ The goal of your project is to predict the manner in which they did the exercise
 
 ## Comments
 The following files are present in this Repo:
+
 Rmarkdown file: pmlproject.Rmd
+
 README.md
 
