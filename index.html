@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>Practical-machine-learning by adrom123</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+  </head>
+  <body>
+    <section class="page-header">
+      <h1 class="project-name">Practical-machine-learning</h1>
+      <h2 class="project-tagline"></h2>
+      <a href="https://github.com/adrom123/Practical-Machine-Learning" class="btn">View on GitHub</a>
+      <a href="https://github.com/adrom123/Practical-Machine-Learning/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/adrom123/Practical-Machine-Learning/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
+
+    <section class="main-content">
+      <p>&lt;!DOCTYPE html&gt;</p>
+
+<p></p>
+
+<p></p>
+
+<p>
+
+</p>
+
+<p></p>
+
+
+
+<p>
+</p>
+
+
+
+
+
+
+
+code{white-space: pre;}
+
+<p></p>
+
+
+
+
+  pre:not([class]) {
+    background-color: white;
+  }
+
+
+
+
+
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+
+
+<p></p>
+
+<p></p>
+
+
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+
+
+<div>
+
+
+
+
+
+
+
+
+
+
+
+
+<div id="header">
+
+
+
+
+</div>
+
+<div id="background-source-httpswww.coursera.orglearnpractical-machine-learningsupplementpvinjcourse-project-instructions-read-first">
+<h3>
+<a id="background-source-httpswwwcourseraorglearnpractical-machine-learningsupplementpvinjcourse-project-instructions-read-first" class="anchor" href="#background-source-httpswwwcourseraorglearnpractical-machine-learningsupplementpvinjcourse-project-instructions-read-first" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Background (Source: <a href="https://www.coursera.org/learn/practical-machine-learning/supplement/PvInj/course-project-instructions-read-first">https://www.coursera.org/learn/practical-machine-learning/supplement/PvInj/course-project-instructions-read-first</a>)</h3>
+<p>Using devices such as Jawbone Up, Nike FuelBand, and Fitbit it is now possible to collect a large amount of data about personal activity relatively inexpensively. These type of devices are part of the quantified self movement - a group of enthusiasts who take measurements about themselves regularly to improve their health, to find patterns in their behavior, or because they are tech geeks. One thing that people regularly do is quantify how much of a particular activity they do, but they rarely quantify how well they do it. In this project, your goal will be to use data from accelerometers on the belt, forearm, arm, and dumbell of 6 participants. They were asked to perform barbell lifts correctly and incorrectly in 5 different ways. More information is available from the website here: <a href="http://groupware.les.inf.puc-rio.br/har">http://groupware.les.inf.puc-rio.br/har</a> (see the section on the Weight Lifting Exercise Dataset).</p>
+</div>
+
+<div id="data">
+<h3>
+<a id="data" class="anchor" href="#data" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Data</h3>
+<p>The training data for this project is available here:</p>
+<p><a href="https://d396qusza40orc.cloudfront.net/predmachlearn/pml-training.csv">https://d396qusza40orc.cloudfront.net/predmachlearn/pml-training.csv</a></p>
+<p>The test data is available here:</p>
+<p><a href="https://d396qusza40orc.cloudfront.net/predmachlearn/pml-testing.csv">https://d396qusza40orc.cloudfront.net/predmachlearn/pml-testing.csv</a></p>
+<p>The data for this project came from this source: <a href="http://groupware.les.inf.puc-rio.br/har">http://groupware.les.inf.puc-rio.br/har</a>.</p>
+</div>
+
+<div id="goal">
+<h3>
+<a id="goal" class="anchor" href="#goal" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Goal</h3>
+<p>The goal of your project is to predict the manner in which they did the exercise. This is the “classe” variable in the training set. You may use any of the other variables to predict with. You should create a report describing how you built your model, how you used cross validation, what you think the expected out of sample error is, and why you made the choices you did. You will also use your prediction model to predict 20 different test cases.</p>
+</div>
+
+<div id="data-preperation-step">
+<h3>
+<a id="data-preperation-step" class="anchor" href="#data-preperation-step" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>DATA PREPERATION STEP</h3>
+<div id="load-all-necessary-packages">
+<h4>
+<a id="load-all-necessary-packages" class="anchor" href="#load-all-necessary-packages" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Load all necessary packages</h4>
+<pre><code>require(caret)</code></pre>
+<pre><code>## Warning: package 'caret' was built under R version 3.3.1</code></pre>
+<pre><code>## Warning: package 'ggplot2' was built under R version 3.3.1</code></pre>
+<pre><code>    require(corrplot)</code></pre>
+<pre><code>## Warning: package 'corrplot' was built under R version 3.3.1</code></pre>
+<pre><code>      require(ggplot2)
+        require(knitr)</code></pre>
+<pre><code>## Warning: package 'knitr' was built under R version 3.3.1</code></pre>
+<pre><code>          require(Rtsne)</code></pre>
+<pre><code>## Warning: package 'Rtsne' was built under R version 3.3.1</code></pre>
+<pre><code>            require(stats)
+              require(xgboost)</code></pre>
+<pre><code>## Warning: package 'xgboost' was built under R version 3.3.1</code></pre>
+<pre><code>                require(e1071)</code></pre>
+<pre><code>## Warning: package 'e1071' was built under R version 3.3.1</code></pre>
+<pre><code>                knitr::opts_chunk$set(cache=TRUE)</code></pre>
+<p>For fast and accurate training the model, I choose XGBoost, an implementation of tree-based extreme gradient boosting algorithm.</p>
+</div>
+
+<div id="getting-data">
+<h4>
+<a id="getting-data" class="anchor" href="#getting-data" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>GETTING DATA</h4>
+<pre><code># Declare the URL of the training &amp; test datasets
+train_url &lt;-"https://d396qusza40orc.cloudfront.net/predmachlearn/pml-training.csv"
+
+test_url &lt;- "https://d396qusza40orc.cloudfront.net/predmachlearn/pml-testing.csv"
+
+# Declare the names of the training &amp; test data to be downloaded
+train_name &lt;- "./data/pml-training.csv"
+test_name &lt;- "./data/pml-testing.csv"
+
+# Check if the directory exists, if not then create a new directory
+if (!file.exists("./data")) {
+    dir.create("./data")
+}
+# Check if the training &amp; test data files exists, if not
+# then download the files from the URL declared above
+
+if (!file.exists(train_name)) {
+    download.file(train_url, destfile=train_name, method="curl")
+}
+if (!file.exists(test_name)) {
+    download.file(test_url, destfile=test_name, method="curl")
+}
+# Load the files into R as data.frames  
+train &lt;- read.csv("./data/pml-training.csv")
+test &lt;- read.csv("./data/pml-testing.csv")
+
+# Check the dimensions and the variable names of the test &amp; train 
+# data.frames
+dim(train)</code></pre>
+<pre><code>## [1] 19622   160</code></pre>
+<pre><code>dim(test)</code></pre>
+<pre><code>## [1]  20 160</code></pre>
+<pre><code>names(train)</code></pre>
+<pre><code>##   [1] "X"                        "user_name"               
+##   [3] "raw_timestamp_part_1"     "raw_timestamp_part_2"    
+##   [5] "cvtd_timestamp"           "new_window"              
+##   [7] "num_window"               "roll_belt"               
+##   [9] "pitch_belt"               "yaw_belt"                
+##  [11] "total_accel_belt"         "kurtosis_roll_belt"      
+##  [13] "kurtosis_picth_belt"      "kurtosis_yaw_belt"       
+##  [15] "skewness_roll_belt"       "skewness_roll_belt.1"    
+##  [17] "skewness_yaw_belt"        "max_roll_belt"           
+##  [19] "max_picth_belt"           "max_yaw_belt"            
+##  [21] "min_roll_belt"            "min_pitch_belt"          
+##  [23] "min_yaw_belt"             "amplitude_roll_belt"     
+##  [25] "amplitude_pitch_belt"     "amplitude_yaw_belt"      
+##  [27] "var_total_accel_belt"     "avg_roll_belt"           
+##  [29] "stddev_roll_belt"         "var_roll_belt"           
+##  [31] "avg_pitch_belt"           "stddev_pitch_belt"       
+##  [33] "var_pitch_belt"           "avg_yaw_belt"            
+##  [35] "stddev_yaw_belt"          "var_yaw_belt"            
+##  [37] "gyros_belt_x"             "gyros_belt_y"            
+##  [39] "gyros_belt_z"             "accel_belt_x"            
+##  [41] "accel_belt_y"             "accel_belt_z"            
+##  [43] "magnet_belt_x"            "magnet_belt_y"           
+##  [45] "magnet_belt_z"            "roll_arm"                
+##  [47] "pitch_arm"                "yaw_arm"                 
+##  [49] "total_accel_arm"          "var_accel_arm"           
+##  [51] "avg_roll_arm"             "stddev_roll_arm"         
+##  [53] "var_roll_arm"             "avg_pitch_arm"           
+##  [55] "stddev_pitch_arm"         "var_pitch_arm"           
+##  [57] "avg_yaw_arm"              "stddev_yaw_arm"          
+##  [59] "var_yaw_arm"              "gyros_arm_x"             
+##  [61] "gyros_arm_y"              "gyros_arm_z"             
+##  [63] "accel_arm_x"              "accel_arm_y"             
+##  [65] "accel_arm_z"              "magnet_arm_x"            
+##  [67] "magnet_arm_y"             "magnet_arm_z"            
+##  [69] "kurtosis_roll_arm"        "kurtosis_picth_arm"      
+##  [71] "kurtosis_yaw_arm"         "skewness_roll_arm"       
+##  [73] "skewness_pitch_arm"       "skewness_yaw_arm"        
+##  [75] "max_roll_arm"             "max_picth_arm"           
+##  [77] "max_yaw_arm"              "min_roll_arm"            
+##  [79] "min_pitch_arm"            "min_yaw_arm"             
+##  [81] "amplitude_roll_arm"       "amplitude_pitch_arm"     
+##  [83] "amplitude_yaw_arm"        "roll_dumbbell"           
+##  [85] "pitch_dumbbell"           "yaw_dumbbell"            
+##  [87] "kurtosis_roll_dumbbell"   "kurtosis_picth_dumbbell" 
+##  [89] "kurtosis_yaw_dumbbell"    "skewness_roll_dumbbell"  
+##  [91] "skewness_pitch_dumbbell"  "skewness_yaw_dumbbell"   
+##  [93] "max_roll_dumbbell"        "max_picth_dumbbell"      
+##  [95] "max_yaw_dumbbell"         "min_roll_dumbbell"       
+##  [97] "min_pitch_dumbbell"       "min_yaw_dumbbell"        
+##  [99] "amplitude_roll_dumbbell"  "amplitude_pitch_dumbbell"
+## [101] "amplitude_yaw_dumbbell"   "total_accel_dumbbell"    
+## [103] "var_accel_dumbbell"       "avg_roll_dumbbell"       
+## [105] "stddev_roll_dumbbell"     "var_roll_dumbbell"       
+## [107] "avg_pitch_dumbbell"       "stddev_pitch_dumbbell"   
+## [109] "var_pitch_dumbbell"       "avg_yaw_dumbbell"        
+## [111] "stddev_yaw_dumbbell"      "var_yaw_dumbbell"        
+## [113] "gyros_dumbbell_x"         "gyros_dumbbell_y"        
+## [115] "gyros_dumbbell_z"         "accel_dumbbell_x"        
+## [117] "accel_dumbbell_y"         "accel_dumbbell_z"        
+## [119] "magnet_dumbbell_x"        "magnet_dumbbell_y"       
+## [121] "magnet_dumbbell_z"        "roll_forearm"            
+## [123] "pitch_forearm"            "yaw_forearm"             
+## [125] "kurtosis_roll_forearm"    "kurtosis_picth_forearm"  
+## [127] "kurtosis_yaw_forearm"     "skewness_roll_forearm"   
+## [129] "skewness_pitch_forearm"   "skewness_yaw_forearm"    
+## [131] "max_roll_forearm"         "max_picth_forearm"       
+## [133] "max_yaw_forearm"          "min_roll_forearm"        
+## [135] "min_pitch_forearm"        "min_yaw_forearm"         
+## [137] "amplitude_roll_forearm"   "amplitude_pitch_forearm" 
+## [139] "amplitude_yaw_forearm"    "total_accel_forearm"     
+## [141] "var_accel_forearm"        "avg_roll_forearm"        
+## [143] "stddev_roll_forearm"      "var_roll_forearm"        
+## [145] "avg_pitch_forearm"        "stddev_pitch_forearm"    
+## [147] "var_pitch_forearm"        "avg_yaw_forearm"         
+## [149] "stddev_yaw_forearm"       "var_yaw_forearm"         
+## [151] "gyros_forearm_x"          "gyros_forearm_y"         
+## [153] "gyros_forearm_z"          "accel_forearm_x"         
+## [155] "accel_forearm_y"          "accel_forearm_z"         
+## [157] "magnet_forearm_x"         "magnet_forearm_y"        
+## [159] "magnet_forearm_z"         "classe"</code></pre>
+<pre><code>names(test)</code></pre>
+<pre><code>##   [1] "X"                        "user_name"               
+##   [3] "raw_timestamp_part_1"     "raw_timestamp_part_2"    
+##   [5] "cvtd_timestamp"           "new_window"              
+##   [7] "num_window"               "roll_belt"               
+##   [9] "pitch_belt"               "yaw_belt"                
+##  [11] "total_accel_belt"         "kurtosis_roll_belt"      
+##  [13] "kurtosis_picth_belt"      "kurtosis_yaw_belt"       
+##  [15] "skewness_roll_belt"       "skewness_roll_belt.1"    
+##  [17] "skewness_yaw_belt"        "max_roll_belt"           
+##  [19] "max_picth_belt"           "max_yaw_belt"            
+##  [21] "min_roll_belt"            "min_pitch_belt"          
+##  [23] "min_yaw_belt"             "amplitude_roll_belt"     
+##  [25] "amplitude_pitch_belt"     "amplitude_yaw_belt"      
+##  [27] "var_total_accel_belt"     "avg_roll_belt"           
+##  [29] "stddev_roll_belt"         "var_roll_belt"           
+##  [31] "avg_pitch_belt"           "stddev_pitch_belt"       
+##  [33] "var_pitch_belt"           "avg_yaw_belt"            
+##  [35] "stddev_yaw_belt"          "var_yaw_belt"            
+##  [37] "gyros_belt_x"             "gyros_belt_y"            
+##  [39] "gyros_belt_z"             "accel_belt_x"            
+##  [41] "accel_belt_y"             "accel_belt_z"            
+##  [43] "magnet_belt_x"            "magnet_belt_y"           
+##  [45] "magnet_belt_z"            "roll_arm"                
+##  [47] "pitch_arm"                "yaw_arm"                 
+##  [49] "total_accel_arm"          "var_accel_arm"           
+##  [51] "avg_roll_arm"             "stddev_roll_arm"         
+##  [53] "var_roll_arm"             "avg_pitch_arm"           
+##  [55] "stddev_pitch_arm"         "var_pitch_arm"           
+##  [57] "avg_yaw_arm"              "stddev_yaw_arm"          
+##  [59] "var_yaw_arm"              "gyros_arm_x"             
+##  [61] "gyros_arm_y"              "gyros_arm_z"             
+##  [63] "accel_arm_x"              "accel_arm_y"             
+##  [65] "accel_arm_z"              "magnet_arm_x"            
+##  [67] "magnet_arm_y"             "magnet_arm_z"            
+##  [69] "kurtosis_roll_arm"        "kurtosis_picth_arm"      
+##  [71] "kurtosis_yaw_arm"         "skewness_roll_arm"       
+##  [73] "skewness_pitch_arm"       "skewness_yaw_arm"        
+##  [75] "max_roll_arm"             "max_picth_arm"           
+##  [77] "max_yaw_arm"              "min_roll_arm"            
+##  [79] "min_pitch_arm"            "min_yaw_arm"             
+##  [81] "amplitude_roll_arm"       "amplitude_pitch_arm"     
+##  [83] "amplitude_yaw_arm"        "roll_dumbbell"           
+##  [85] "pitch_dumbbell"           "yaw_dumbbell"            
+##  [87] "kurtosis_roll_dumbbell"   "kurtosis_picth_dumbbell" 
+##  [89] "kurtosis_yaw_dumbbell"    "skewness_roll_dumbbell"  
+##  [91] "skewness_pitch_dumbbell"  "skewness_yaw_dumbbell"   
+##  [93] "max_roll_dumbbell"        "max_picth_dumbbell"      
+##  [95] "max_yaw_dumbbell"         "min_roll_dumbbell"       
+##  [97] "min_pitch_dumbbell"       "min_yaw_dumbbell"        
+##  [99] "amplitude_roll_dumbbell"  "amplitude_pitch_dumbbell"
+## [101] "amplitude_yaw_dumbbell"   "total_accel_dumbbell"    
+## [103] "var_accel_dumbbell"       "avg_roll_dumbbell"       
+## [105] "stddev_roll_dumbbell"     "var_roll_dumbbell"       
+## [107] "avg_pitch_dumbbell"       "stddev_pitch_dumbbell"   
+## [109] "var_pitch_dumbbell"       "avg_yaw_dumbbell"        
+## [111] "stddev_yaw_dumbbell"      "var_yaw_dumbbell"        
+## [113] "gyros_dumbbell_x"         "gyros_dumbbell_y"        
+## [115] "gyros_dumbbell_z"         "accel_dumbbell_x"        
+## [117] "accel_dumbbell_y"         "accel_dumbbell_z"        
+## [119] "magnet_dumbbell_x"        "magnet_dumbbell_y"       
+## [121] "magnet_dumbbell_z"        "roll_forearm"            
+## [123] "pitch_forearm"            "yaw_forearm"             
+## [125] "kurtosis_roll_forearm"    "kurtosis_picth_forearm"  
+## [127] "kurtosis_yaw_forearm"     "skewness_roll_forearm"   
+## [129] "skewness_pitch_forearm"   "skewness_yaw_forearm"    
+## [131] "max_roll_forearm"         "max_picth_forearm"       
+## [133] "max_yaw_forearm"          "min_roll_forearm"        
+## [135] "min_pitch_forearm"        "min_yaw_forearm"         
+## [137] "amplitude_roll_forearm"   "amplitude_pitch_forearm" 
+## [139] "amplitude_yaw_forearm"    "total_accel_forearm"     
+## [141] "var_accel_forearm"        "avg_roll_forearm"        
+## [143] "stddev_roll_forearm"      "var_roll_forearm"        
+## [145] "avg_pitch_forearm"        "stddev_pitch_forearm"    
+## [147] "var_pitch_forearm"        "avg_yaw_forearm"         
+## [149] "stddev_yaw_forearm"       "var_yaw_forearm"         
+## [151] "gyros_forearm_x"          "gyros_forearm_y"         
+## [153] "gyros_forearm_z"          "accel_forearm_x"         
+## [155] "accel_forearm_y"          "accel_forearm_z"         
+## [157] "magnet_forearm_x"         "magnet_forearm_y"        
+## [159] "magnet_forearm_z"         "problem_id"</code></pre>
+<p>TRAIN DATA: 19,622 rows | 158 features (predictors) | Column ‘X’ is unusable row number | “classe” is the target variable</p>
+<p>TEST DATA: 20 rows | 158 features |Column ‘X’ is unusable row number</p>
+</div>
+
+<div id="data-cleaning">
+<h4>
+<a id="data-cleaning" class="anchor" href="#data-cleaning" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>DATA CLEANING</h4>
+<ol>
+<li>Remove the target variable(classe) from the train dataset</li>
+</ol>
+<pre><code># target variable (label)
+target_var &lt;- train[, "classe"]
+target &lt;- target_var
+levels(target)</code></pre>
+<pre><code>## [1] "A" "B" "C" "D" "E"</code></pre>
+<p>Note: i) The Target variable has five(5) levels ii) Levels are in character format (“A” “B” “C” “D” “E”)</p>
+<ol start="2">
+<li>Convert target variable from character to numeric, ( XGBoost can only work with numerical data )</li>
+</ol>
+<pre><code># Conversion of Levels: character -&gt; numeric
+
+num_level &lt;- length(levels(target))
+levels(target) &lt;- 1:num_level
+head(target)</code></pre>
+<pre><code>## [1] 1 1 1 1 1 1
+## Levels: 1 2 3 4 5</code></pre>
+<ol start="3">
+<li>Remove target variable (classe) from train dataset</li>
+</ol>
+<pre><code># remove target from train
+train$classe &lt;- NULL</code></pre>
+<p>Background excerpt:“In this project, your goal will be to use data from accelerometers on the belt, forearm, arm, and dumbell of 6 participants”</p>
+<ol start="4">
+<li>Filter by belt, forearm, arm and dumbell columns; remove other variables.</li>
+</ol>
+<pre><code># Retain relevant variables related to belt, forearm, arm, dumbell
+relevant_vars &lt;- grepl("belt|arm|dumbell", names(train))
+train &lt;- train[, relevant_vars]
+test &lt;- test[, relevant_vars]</code></pre>
+<ol start="5">
+<li>Remove variables with NA values, using test data as a guide</li>
+</ol>
+<pre><code># remove columns with NA, use test data as referal for NA
+cols_without_na &lt;- colSums(is.na(test)) == 0
+train &lt;- train[, cols_without_na]
+test &lt;- test[, cols_without_na]</code></pre>
+<p>Result: 39 feature variables remain</p>
+</div>
+
+<p></p>
+</div>
+
+<div id="pre-processing">
+<h3>
+<a id="pre-processing" class="anchor" href="#pre-processing" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>PRE-PROCESSING</h3>
+<div id="feature-variance-investigation">
+<h4>
+<a id="feature-variance-investigation" class="anchor" href="#feature-variance-investigation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Feature Variance investigation</h4>
+<ol start="6">
+<li>Check for variables that have extremely low variance (using nearZeroVar() )</li>
+</ol>
+<pre><code># check for zero variance
+zero_var &lt;- nearZeroVar(train, saveMetrics=TRUE)
+zero_var</code></pre>
+<pre><code>##                     freqRatio percentUnique zeroVar   nzv
+## roll_belt            1.101904     6.7781062   FALSE FALSE
+## pitch_belt           1.036082     9.3772296   FALSE FALSE
+## yaw_belt             1.058480     9.9734991   FALSE FALSE
+## total_accel_belt     1.063160     0.1477933   FALSE FALSE
+## gyros_belt_x         1.058651     0.7134849   FALSE FALSE
+## gyros_belt_y         1.144000     0.3516461   FALSE FALSE
+## gyros_belt_z         1.066214     0.8612782   FALSE FALSE
+## accel_belt_x         1.055412     0.8357966   FALSE FALSE
+## accel_belt_y         1.113725     0.7287738   FALSE FALSE
+## accel_belt_z         1.078767     1.5237998   FALSE FALSE
+## magnet_belt_x        1.090141     1.6664968   FALSE FALSE
+## magnet_belt_y        1.099688     1.5187035   FALSE FALSE
+## magnet_belt_z        1.006369     2.3290184   FALSE FALSE
+## roll_arm            52.338462    13.5256345   FALSE FALSE
+## pitch_arm           87.256410    15.7323412   FALSE FALSE
+## yaw_arm             33.029126    14.6570176   FALSE FALSE
+## total_accel_arm      1.024526     0.3363572   FALSE FALSE
+## gyros_arm_x          1.015504     3.2769341   FALSE FALSE
+## gyros_arm_y          1.454369     1.9162165   FALSE FALSE
+## gyros_arm_z          1.110687     1.2638875   FALSE FALSE
+## accel_arm_x          1.017341     3.9598410   FALSE FALSE
+## accel_arm_y          1.140187     2.7367241   FALSE FALSE
+## accel_arm_z          1.128000     4.0362858   FALSE FALSE
+## magnet_arm_x         1.000000     6.8239731   FALSE FALSE
+## magnet_arm_y         1.056818     4.4439914   FALSE FALSE
+## magnet_arm_z         1.036364     6.4468454   FALSE FALSE
+## roll_forearm        11.589286    11.0895933   FALSE FALSE
+## pitch_forearm       65.983051    14.8557741   FALSE FALSE
+## yaw_forearm         15.322835    10.1467740   FALSE FALSE
+## total_accel_forearm  1.128928     0.3567424   FALSE FALSE
+## gyros_forearm_x      1.059273     1.5187035   FALSE FALSE
+## gyros_forearm_y      1.036554     3.7763735   FALSE FALSE
+## gyros_forearm_z      1.122917     1.5645704   FALSE FALSE
+## accel_forearm_x      1.126437     4.0464784   FALSE FALSE
+## accel_forearm_y      1.059406     5.1116094   FALSE FALSE
+## accel_forearm_z      1.006250     2.9558659   FALSE FALSE
+## magnet_forearm_x     1.012346     7.7667924   FALSE FALSE
+## magnet_forearm_y     1.246914     9.5403119   FALSE FALSE
+## magnet_forearm_z     1.000000     8.5771073   FALSE FALSE</code></pre>
+<p>Result: All features have noticeable variability, thus no more filtering is required</p>
+</div>
+
+<p></p>
+</div>
+
+<div id="visualization">
+<h3>
+<a id="visualization" class="anchor" href="#visualization" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>VISUALIZATION</h3>
+<div id="plot--features-vs-target">
+<h4>
+<a id="plot--features-vs-target" class="anchor" href="#plot--features-vs-target" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Plot- features vs target</h4>
+<ol start="7">
+<li>Plot features against the target variable</li>
+</ol>
+<pre><code>featurePlot(train, target_var, "strip")</code></pre>
+<p><img width="864"></p>
+<p>Observation: The distribution of the features is relatively similar across the target levels.</p>
+</div>
+
+<div id="plot--correlation-matrix">
+<h4>
+<a id="plot--correlation-matrix" class="anchor" href="#plot--correlation-matrix" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Plot- correlation matrix</h4>
+<ol start="8">
+<li>Plot a correlation matrix of feature variables</li>
+</ol>
+<pre><code>corrplot.mixed(cor(train), lower="circle", upper="color", 
+               tl.pos="lt", diag="n", order="hclust", hclust.method="complete")</code></pre>
+<p><img width="864"></p>
+<p>Observation: The Correlation Matrix shows features are generally uncorrelated, withhold further preprocessing.</p>
+</div>
+
+<p></p>
+</div>
+
+<div id="machine-learning-model">
+<h2>
+<a id="machine-learning-model" class="anchor" href="#machine-learning-model" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>MACHINE LEARNING MODEL</h2>
+<p>To predict the activity quality (‘classe’) using features variables collected from the actvity monitors the XGBoost extreme gradient boosting algorithm was applied.</p>
+<p>Note: XGBoost supports only numeric matrix data. 9) Converting all training, testing and target data to matrix.</p>
+<div id="prepare-train-test-data">
+<h3>
+<a id="prepare-train--test-data" class="anchor" href="#prepare-train--test-data" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Prepare train &amp; test data</h3>
+<pre><code># convert the train &amp; test data to the matrix format
+train_matrix &lt;- as.matrix(train)
+    mode(train_matrix) &lt;- "numeric"
+
+test_matrix &lt;- as.matrix(test)
+    mode(test_matrix) &lt;- "numeric"
+    
+# convert target_var from factor to numeric matrix 
+#   xgboost takes multi-labels in [0, numOfClass)
+y = as.matrix(as.integer(target_var)-1)</code></pre>
+<div id="set-model-parameters">
+<h4>
+<a id="set-model-parameters" class="anchor" href="#set-model-parameters" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Set Model Parameters</h4>
+<ol start="10">
+<li>Set XGBoost parameters for cross validation and training &amp;<br>
+multiclass classification objective as the gradient boosting’s learning function.</li>
+</ol>
+<pre><code># xgboost parameters
+param &lt;- list("objective" = "multi:softprob",    # multiclass classification 
+              "num_class" = num_level,    # number of classes 
+                 "eval_metric" = "merror",    # evaluation metric =                                                      #multiclass error rate 
+                      "nthread" = 8,              # num. of threads used 
+                        "max_depth" = 16,    # maximum depth of tree 
+                            "eta" = 0.3,    # step size shrinkage 
+                    "gamma" = 0,         # min. loss reduction 
+                "subsample" = 1,    # data instances to grow tree 
+             "colsample_bytree" = 1,  # subsample ratio of columns when                                        #constructing each tree 
+              "min_child_weight" = 12  # min. sum of instance weight                                      #needed in a child 
+              )</code></pre>
+</div>
+
+<div id="k-fold-cross-validation-to-estimate-error">
+<h4>
+<a id="k-fold-cross-validation-to-estimate-error" class="anchor" href="#k-fold-cross-validation-to-estimate-error" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>K-FOLD CROSS VALIDATION (TO ESTIMATE ERROR)</h4>
+<div id="k-4-epoch-200">
+<h5>
+<a id="k--4--epoch--200" class="anchor" href="#k--4--epoch--200" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>k = 4 | epoch = 200</h5>
+<ol start="11">
+<li>Perform 4-fold cross-validation to estimate error and determine optimal iterations for minimal multiclass error rate</li>
+</ol>
+<pre><code># set random seed for reproducibility 
+set.seed(1234)
+
+# k-fold cross validation - k = 4 | epoch = 200
+nround_cv = 200
+
+bst_cv &lt;- xgb.cv(param=param, data=train_matrix, label=y, nfold=4, nrounds=nround_cv, prediction=TRUE, verbose=FALSE)
+
+tail(bst_cv$dt) </code></pre>
+<pre><code>##    train.merror.mean train.merror.std test.merror.mean test.merror.std
+## 1:                 0                0         0.005504        0.001165
+## 2:                 0                0         0.005555        0.001071
+## 3:                 0                0         0.005555        0.001071
+## 4:                 0                0         0.005555        0.001071
+## 5:                 0                0         0.005606        0.001135
+## 6:                 0                0         0.005555        0.001109</code></pre>
+<pre><code># find index of minimum merror
+
+min_merror_index = which.min(bst_cv$dt[, test.merror.mean]) 
+min_merror_index</code></pre>
+<pre><code>## [1] 187</code></pre>
+<pre><code># minimum merror
+bst_cv$dt[min_merror_index,]</code></pre>
+<pre><code>##    train.merror.mean train.merror.std test.merror.mean test.merror.std
+## 1:                 0                0         0.005402        0.000978</code></pre>
+<p>Observation:</p>
+<p>Optimal cross-validation’s minimum error rate ‘test.merror.mean’ approx. 0.54% (at iteration point = 187)</p>
+</div>
+
+<p></p>
+</div>
+
+<div id="confusion-matrix">
+<h4>
+<a id="confusion-matrix" class="anchor" href="#confusion-matrix" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Confusion matrix</h4>
+<ol start="12">
+<li>Tabulate the cross-validation’s predictions of the model against actual.</li>
+</ol>
+<pre><code># get CV's prediction decoding
+pred_cv = matrix(bst_cv$pred, nrow=length(bst_cv$pred)/num_level, ncol=num_level)
+pred_cv = max.col(pred_cv, "last")
+
+# confusion matrix
+confusionMatrix(factor(y+1), factor(pred_cv))</code></pre>
+<pre><code>## Confusion Matrix and Statistics
+## 
+##           Reference
+## Prediction    1    2    3    4    5
+##          1 5566   10    2    2    0
+##          2   12 3772   12    0    1
+##          3    0   24 3384   14    0
+##          4    0    0   19 3194    3
+##          5    0    1    1    8 3597
+## 
+## Overall Statistics
+##                                           
+##                Accuracy : 0.9944          
+##                  95% CI : (0.9933, 0.9954)
+##     No Information Rate : 0.2843          
+##     P-Value [Acc &gt; NIR] : &lt; 2.2e-16       
+##                                           
+##                   Kappa : 0.993           
+##  Mcnemar's Test P-Value : NA              
+## 
+## Statistics by Class:
+## 
+##                      Class: 1 Class: 2 Class: 3 Class: 4 Class: 5
+## Sensitivity            0.9978   0.9908   0.9901   0.9925   0.9989
+## Specificity            0.9990   0.9984   0.9977   0.9987   0.9994
+## Pos Pred Value         0.9975   0.9934   0.9889   0.9932   0.9972
+## Neg Pred Value         0.9991   0.9978   0.9979   0.9985   0.9998
+## Prevalence             0.2843   0.1940   0.1742   0.1640   0.1835
+## Detection Rate         0.2837   0.1922   0.1725   0.1628   0.1833
+## Detection Prevalence   0.2844   0.1935   0.1744   0.1639   0.1838
+## Balanced Accuracy      0.9984   0.9946   0.9939   0.9956   0.9991</code></pre>
+<p>Observation: Correct predictions are on the diagonal Accuracy = ‘99.44% | Error rate = ’0.56%’</p>
+</div>
+
+<div id="model-training">
+<h4>
+<a id="model-training" class="anchor" href="#model-training" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Model training</h4>
+<ol start="13">
+<li>Train XGBoost using the training data.</li>
+</ol>
+<pre><code># Model fitting using training data
+
+model_trained &lt;- xgboost(param=param, data=train_matrix, label=y, 
+                                nrounds=min_merror_index, verbose=0) </code></pre>
+</div>
+
+<div id="predict-the-test-data-outcomes">
+<h4>
+<a id="predict-the-test-data-outcomes" class="anchor" href="#predict-the-test-data-outcomes" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Predict the test data outcomes</h4>
+<pre><code># Predict test data outcomes using the XGboost trained model  (model_trained)
+
+prediction &lt;- predict(model_trained, test_matrix)  
+head(prediction, 10)  </code></pre>
+<pre><code>##  [1] 2.722199e-04 9.982042e-01 1.132105e-03 1.515472e-04 2.398420e-04
+##  [6] 9.991074e-01 6.353945e-04 2.402208e-04 3.893657e-06 1.299460e-05</code></pre>
+</div>
+
+<div id="post-processing">
+<h4>
+<a id="post-processing" class="anchor" href="#post-processing" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>POST-PROCESSING</h4>
+<ol start="14">
+<li>Convert the levels of outcomes ‘(1,2,3,4,5)’ to their respective letter codes ‘(A, B, C, D, E)’.</li>
+</ol>
+<pre><code># Convert the numeric outcomes to their letter code
+prediction &lt;- matrix(prediction, nrow=num_level, ncol&lt;-length(prediction)/num_level)
+prediction &lt;- t(prediction)
+prediction &lt;- max.col(prediction, "last")
+prediction_char &lt;- toupper(letters[prediction])</code></pre>
+</div>
+
+<p></p>
+</div>
+
+<div id="prepare-the-submission-files">
+<h3>
+<a id="prepare-the-submission-files" class="anchor" href="#prepare-the-submission-files" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>PREPARE THE SUBMISSION FILES</h3>
+<ol start="15">
+<li>Create submission files with predictions</li>
+</ol>
+<pre><code>path = "./answer"
+dir.create(path)
+pml_write_files = function(x) {
+    n = length(x)
+    for(i in 1: n) {
+        filename = paste0("problem_id_", i, ".txt")
+        write.table(x[i], file=file.path(path, filename), 
+                    quote=FALSE, row.names=FALSE, col.names=FALSE)
+    }
+}
+pml_write_files(prediction_char)</code></pre>
+<hr>
+</div>
+
+<p></p>
+</div>
+
+<p></p>
+</div>
+
+
+
+
+
+
+
+<p>
+</p>
+
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/adrom123/Practical-Machine-Learning">Practical-machine-learning</a> is maintained by <a href="https://github.com/adrom123">adrom123</a>.</span>
+
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+      </footer>
+
+    </section>
+
+  
+  </body>
+</html>
