@@ -1,5 +1,13 @@
 # Practical-Machine-Learning
 
+## MODEL 
+### To predict the activity quality (‘classe’) using features variables collected from the activity monitors the XGBoost extreme gradient boosting algorithm was used.
+
+## OUT OF SAMPLE ERROR
+###  The out of sample error was estimated using cross validation (estimated error = 0.54%). Refer to compiled html link below
+
+
+
 ## Deliverables
 The following files are present in this Repo:
 
