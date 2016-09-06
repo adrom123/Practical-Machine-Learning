@@ -17,7 +17,7 @@ HTML file: pmlproject.html
 
 README.md
 
-[Linked to Compiled HTML](https://adrom123.github.io/Practical-Machine-Learning/)
+[Linked to Compiled HTML](http://htmlpreview.github.io/?https://github.com/adrom123/Practical-Machine-Learning/blob/master/pmlproject.html)
 
 
 ## Background
